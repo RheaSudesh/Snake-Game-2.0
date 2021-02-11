@@ -1,5 +1,6 @@
-if(localStorage.getItem("players") === null) 
+if(localStorage.getItem("players") === null)
   localStorage.setItem("players", JSON.stringify([]));
+
 
 var mainInterval = null;
 var game = {
@@ -13,19 +14,21 @@ var game = {
   speed:200,
   busy:false,
   minusBusy:false,
+  obstacleBusy:false,
   possibleMinusPointCoords: {row:null,ind:null},
   point:0,
   gameOverInterval:null,
   playerName:'',
   posiblePointCoords: {row:null,ind:null},
   playerMaxScore:0,
-  
+  lol:0,
+ 
   tryStartGame:function(e){
     var element = game.getid('userLogin');
     if(e.keyCode == 13 && !element.classList.contains('hiddenObject')) game.submitPleyer('playerName');
   },
 
-  
+ 
   resetGameParameters:function(){
       this.rows=null;
       this.direction=null;
@@ -75,6 +78,7 @@ var game = {
       },1400);
   },
 
+  /*************************************************** Game Start and Restart ***********************************************/
   drawBoard:function(){
       for(var i = 0; i<this.boardLength;i++){
           var row = document.createElement("div");
@@ -109,6 +113,8 @@ var game = {
       this.setDirection('right');
       this.getNewPointBox();
       this.getNewMinusPointBox();
+      
+this.getNewObstacle();
   },
 
   setDirection:function(dir,isManual= false){
@@ -117,7 +123,35 @@ var game = {
     else this.runSnakeRun(isManual);
   },
 
-  /********************************** FRUITS AND POINTS ***************************************************/
+  /*******************************************************  OPSTACLE ***************************************************/
+  getNewObstacle:function(){
+    var boxes = document.querySelectorAll('.box');
+    var randomIndex = this.getRandomIndex(0,boxes.length-1);
+    var randomBox = boxes[randomIndex];
+    if(randomBox.classList.contains('black')) return this.getNewObstacle();
+    else {
+      for(var i=0;i<4;i++)
+      {
+        boxes[randomIndex+i].classList.add('obstacle');
+      }
+    }
+  },
+
+  removeOldObstacle:function(){
+    this.getAll('.obstacle')[0].classList.remove('obstacle');
+  },
+
+  getGameOverOnObstacle:function(){
+    var self = this;
+    var element = self.getAll('.obstacle')[0];
+    if(typeof element == 'undefined') return {row:-1,ind:-1};
+    var parent = element.parentNode;
+    var ind = [].indexOf.call(parent.children, element);
+    var row = parseInt(parent.getAttribute("index"));
+    return {row:row,ind:ind};
+  },
+ 
+  /********************************************************* FRUITS AND POINTS ***************************************************/
   getPointsCoords:function(){
     var self = this;
     var element = self.getAll('.green')[0];
@@ -160,7 +194,7 @@ var game = {
       var boxes = document.querySelectorAll('.box');
       var randomIndex = this.getRandomIndex(0,boxes.length-1);
       var randomBox = boxes[randomIndex];
-      if(randomBox.classList.contains('black')) 
+      if(randomBox.classList.contains('black'))
         return this.getNewPointBox();
       else randomBox.classList.add('green');
   },
@@ -177,17 +211,25 @@ var game = {
     if(randomBox.classList.contains('black')) return this.getNewMinusPointBox();
     else randomBox.classList.add('purple');
   },
-
+ 
   setCoords:function(){
     if(this.busy) return;
     this.busy = true;
     var self = this;
     var pointsCoords = self.getPointsCoords();
     var pointsMinusCoords=self.getMinusPointsCoords();
+    var getObstacleCoords = self.getGameOverOnObstacle();
     var isPoint = false;
     var isMinusPoint=false;
+    var isObstacle = false;
     var snakeHead = this.snakeCoords[this.snakeCoords.length-1];
     var snakeTail = this.snakeCoords[0];
+
+    if(getObstacleCoords.row == snakeHead.row && (getObstacleCoords.ind == snakeHead.ind || getObstacleCoords.ind+1 == snakeHead.ind || getObstacleCoords.ind+2 == snakeHead.ind ||getObstacleCoords.ind+3 == snakeHead.ind))  {
+      isObstacle = true;
+      self.removeOldObstacle();
+      setTimeout(self.setGameOverContent,100);
+    }
 
     if(pointsCoords.row == snakeHead.row && pointsCoords.ind == snakeHead.ind) {
       isPoint = true;
@@ -211,14 +253,23 @@ var game = {
       self.rows[el.row].querySelectorAll('.box')[el.ind].classList.add('black');
     });
 
-    if(isPoint) self.getNewPointBox();
+    if(isPoint) {
+      self.getNewPointBox();
+      //remove old wall of length 4
+      for( var wallTile=0;wallTile<4;wallTile++)
+      {
+        self.removeOldObstacle();
+      }
+      self.getNewObstacle();
+    }
     if(isMinusPoint) self.getNewMinusPointBox();
     this.minusBusy=false;
     this.busy = false;
+    this.obstacleBusy=false;
     return self;
   },
 
-  /************************************************************************************************************/
+  /*******************************************************************************************************************************/
   getAll:function(query){
     return document.querySelectorAll(query);
   },
@@ -370,7 +421,7 @@ var game = {
   },
 
   /**********************************************************************************************************************/
-  
+ 
   updateLeaderBoard:function(){
     var self = this;
     var tbody = self.getid('tbody');

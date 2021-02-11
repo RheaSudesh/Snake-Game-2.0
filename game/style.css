@@ -60,7 +60,7 @@ body{
   border-radius: 2px;
 }
 
-.barrier{
+.obstacle{
   background:rgba(121, 60, 37, 0.2);
 }
 
@@ -78,7 +78,7 @@ body{
 .hiddenObject{
   display: none;
 }
-/**/
+
 #userLogin{
   width:300px;
   border:1px solid gray;
