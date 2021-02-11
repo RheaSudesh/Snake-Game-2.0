@@ -32,7 +32,7 @@ body{
   border:1px solid gray;
   cursor: pointer;
   border-radius: 2px;
-   color: #fff;
+   color: white;
    font-family: verdana;
    text-transform:uppercase;
    transition:all .3s;
@@ -42,18 +42,28 @@ body{
 }
 .black{
   background:rgba(9, 114, 9, 0.8);
-  border:1px dotted #522ae2;
+  border:1px dotted blue;
 }
 .fakeBlack{
   background:rgba(168, 98, 98, 0.2);
 }
 .green{
-  background:rgb(212, 33, 27);
+  background:red;
+  border-radius: 20%;  
+}
+.purple{
+  background-color: purple;
+  border-radius: 20%;  
 }
 .snakeHead{
   background:#165a09;
   border-radius: 2px;
 }
+
+.barrier{
+  background:rgba(121, 60, 37, 0.2);
+}
+
 /* ------------------------------------------------ */
 #scoreElement{
   position: absolute;
