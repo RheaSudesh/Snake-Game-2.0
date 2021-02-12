@@ -1,28 +1,40 @@
+// local storage init
 if(localStorage.getItem("players") === null)
   localStorage.setItem("players", JSON.stringify([]));
 
 
-var mainInterval = null;
 var game = {
+  //for game board
   board:document.getElementById("board"),
   boardLength:30,
   rows:null,
   direction:null,
   gameIsStarted:false,
+
+  //for snake
   snakeCoords:[],
   interval:null,
   speed:200,
+
+  //for fruit and obstacle
   busy:false,
   minusBusy:false,
   obstacleBusy:false,
+
+  //for score 
   possibleMinusPointCoords: {row:null,ind:null},
   point:0,
   gameOverInterval:null,
+
+  //for Player inputs
   playerName:'',
   posiblePointCoords: {row:null,ind:null},
   playerMaxScore:0,
-  lol:0,
- 
+
+  
+  /*********************************************************************************************************/
+  /*                                       PLAYER INPUTS                                                   */
+  /*********************************************************************************************************/
   tryStartGame:function(e){
     var element = game.getid('userLogin');
     if(e.keyCode == 13 && !element.classList.contains('hiddenObject')) game.submitPleyer('playerName');
@@ -40,6 +52,7 @@ var game = {
       this.point=0;
       this.posiblePointCoords = {row:null,ind:null};
       this.possibleMinusPointCoords= {row:null,ind:null};
+
   },
 
   checkPlayerName:function(name){
@@ -78,7 +91,9 @@ var game = {
       },1400);
   },
 
-  /*************************************************** Game Start and Restart ***********************************************/
+  /*********************************************************************************************************/
+  /*                                          GAME START AND RESTART                                       */
+  /*********************************************************************************************************/
   drawBoard:function(){
       for(var i = 0; i<this.boardLength;i++){
           var row = document.createElement("div");
@@ -113,8 +128,7 @@ var game = {
       this.setDirection('right');
       this.getNewPointBox();
       this.getNewMinusPointBox();
-      
-this.getNewObstacle();
+      this.getNewObstacle();
   },
 
   setDirection:function(dir,isManual= false){
@@ -123,16 +137,18 @@ this.getNewObstacle();
     else this.runSnakeRun(isManual);
   },
 
-  /*******************************************************  OPSTACLE ***************************************************/
+  /*********************************************************************************************************/
+  /*                                          OBSTACLE                                                     */
+  /*********************************************************************************************************/
   getNewObstacle:function(){
     var boxes = document.querySelectorAll('.box');
     var randomIndex = this.getRandomIndex(0,boxes.length-1);
     var randomBox = boxes[randomIndex];
     if(randomBox.classList.contains('black')) return this.getNewObstacle();
     else {
-      for(var i=0;i<4;i++)
+      for(var wall=0;wall<6;wall++)
       {
-        boxes[randomIndex+i].classList.add('obstacle');
+        boxes[randomIndex+wall].classList.add('obstacle');
       }
     }
   },
@@ -151,7 +167,9 @@ this.getNewObstacle();
     return {row:row,ind:ind};
   },
  
-  /********************************************************* FRUITS AND POINTS ***************************************************/
+  /*********************************************************************************************************/
+  /*                                          FRUITS AND POISON                                            */
+  /*********************************************************************************************************/
   getPointsCoords:function(){
     var self = this;
     var element = self.getAll('.green')[0];
@@ -225,11 +243,12 @@ this.getNewObstacle();
     var snakeHead = this.snakeCoords[this.snakeCoords.length-1];
     var snakeTail = this.snakeCoords[0];
 
-    if(getObstacleCoords.row == snakeHead.row && (getObstacleCoords.ind == snakeHead.ind || getObstacleCoords.ind+1 == snakeHead.ind || getObstacleCoords.ind+2 == snakeHead.ind ||getObstacleCoords.ind+3 == snakeHead.ind))  {
+    if(getObstacleCoords.row == snakeHead.row && (getObstacleCoords.ind == snakeHead.ind || getObstacleCoords.ind+1 == snakeHead.ind || getObstacleCoords.ind+2 == snakeHead.ind ||getObstacleCoords.ind+3 == snakeHead.ind ||getObstacleCoords.ind+4 == snakeHead.ind ||getObstacleCoords.ind+5 == snakeHead.ind))  {
       isObstacle = true;
       self.removeOldObstacle();
       setTimeout(self.setGameOverContent,100);
     }
+
 
     if(pointsCoords.row == snakeHead.row && pointsCoords.ind == snakeHead.ind) {
       isPoint = true;
@@ -255,8 +274,8 @@ this.getNewObstacle();
 
     if(isPoint) {
       self.getNewPointBox();
-      //remove old wall of length 4
-      for( var wallTile=0;wallTile<4;wallTile++)
+      //remove old wall of length 6
+      for( var wallTile=0;wallTile<6;wallTile++)
       {
         self.removeOldObstacle();
       }
@@ -269,7 +288,9 @@ this.getNewObstacle();
     return self;
   },
 
-  /*******************************************************************************************************************************/
+  /*********************************************************************************************************/
+  /*                                          SNAKE MOVEMENT                                               */
+  /*********************************************************************************************************/
   getAll:function(query){
     return document.querySelectorAll(query);
   },
@@ -368,7 +389,9 @@ this.getNewObstacle();
 
 
 
-  /************************************************** Game over ********************************************************/
+  /*********************************************************************************************************/
+  /*                                          GAME OVER                                                    */
+  /*********************************************************************************************************/ 
   updatePlayerMaxScore:function(){
     var self = this;
     var players = JSON.parse(localStorage.getItem('players'));
@@ -406,6 +429,7 @@ this.getNewObstacle();
     self.board.innerHTML = self.getid('gameOverContent').innerHTML;
     self.resetGameParameters();
     self.updateLeaderBoard();
+    
   },
 
   changePlayer:function(){
@@ -417,10 +441,14 @@ this.getNewObstacle();
   restartGame:function(){
     this.board.innerHTML = "";
     this.init();
+    location.reload();
     this.startGame();
   },
+  
 
-  /**********************************************************************************************************************/
+  /*********************************************************************************************************/
+  /*                                          LEADER BOARD                                                 */
+  /*********************************************************************************************************/
  
   updateLeaderBoard:function(){
     var self = this;
@@ -448,3 +476,5 @@ this.getNewObstacle();
 
 game.updateLeaderBoard();
 document.onkeydown = game.tryStartGame;
+
+  

@@ -3,6 +3,15 @@
     margin:0;
     box-sizing: border-box;
 }
+
+p{
+  color: #ffcc53;
+}
+
+h1,h2{
+  color: #85da74;
+}
+
 #board{
   border:2px solid #446CB3;
   display:inline-block;
@@ -10,6 +19,7 @@
 body{
   text-align:center;
 }
+
 .box{
   width:10px;
   height: 10px;
@@ -28,8 +38,8 @@ body{
 .btn{
   padding: 6px 10px;
   margin:6px 0;
-  background: rgba(0,0,0,.6);
-  border:1px solid gray;
+  background: #ffcc53;
+  border:1px solid #ffcc53;
   cursor: pointer;
   border-radius: 2px;
    color: white;
@@ -41,8 +51,8 @@ body{
   background:rgb(148, 141, 141);
 }
 .black{
-  background:rgba(9, 114, 9, 0.8);
-  border:1px dotted blue;
+  background: #4A995F;
+  border:1px dotted black;
 }
 .fakeBlack{
   background:rgba(168, 98, 98, 0.2);
@@ -51,6 +61,7 @@ body{
   background:red;
   border-radius: 20%;  
 }
+
 .purple{
   background-color: purple;
   border-radius: 20%;  
@@ -61,7 +72,11 @@ body{
 }
 
 .obstacle{
-  background:rgba(121, 60, 37, 0.2);
+  background:brown;
+}
+
+header{
+  height: 836px;
 }
 
 /* ------------------------------------------------ */
@@ -72,7 +87,7 @@ body{
   text-align:center;
   z-index:10000;
   padding:10px;
-  background: rgba(0,0,0,0.6);
+  background: #ffcc53;
   color:#fff;
 }
 .hiddenObject{
@@ -81,7 +96,7 @@ body{
 
 #userLogin{
   width:300px;
-  border:1px solid gray;
+  border:1px solid #ffcc53;
   margin:50px auto;
   padding:40px 10px;
   border-radius: 4px;
@@ -94,7 +109,7 @@ body{
   padding:6px 4px;
   text-transform: uppercase;
   border-radius: 2px;
-  border:1px solid gray;
+  border:1px solid #ffcc53;
 }
 #leaderBoardHaed{
   margin:10px auto 4px;
@@ -112,7 +127,7 @@ body{
 #leaderBoard thead tr th{
   width:200px;
   padding:10px; 
-  border:1px solid #013243;
+  border:1px solid #ffcc53;
   width:200px;
 }
 #leaderBoard thead tr th:first-child,
@@ -120,15 +135,22 @@ body{
   width:50px !important;
 }
 #leaderBoard thead tr th{
-  background:#446CB3;
+  background:#4a995f;
   color:#E4F1FE; 
-  border:1px solid #013243;
+  border:1px solid #ffcc53  ;
 }
 .currentPlayer{
-  background: #34495E;
+  background: #cdf3cd;
 }
 .currentPlayer td {
   border: 1px solid #E4F1FE !important;
-  color:#E4F1FE;
+  color: #4a995f;
+}
+
+td {
+  width:50px !important;
+  color:#85da74 ;
+  /*background:blanchedalmond; */
+  font-style: bold;
 }
 /* ------------------------------- */
