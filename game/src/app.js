@@ -37,7 +37,7 @@ var game = {
   /*********************************************************************************************************/
   tryStartGame:function(e){
     var element = game.getid('userLogin');
-    if(e.keyCode == 13 && !element.classList.contains('hiddenObject')) game.submitPleyer('playerName');
+    if(e.keyCode == 13 && !element.classList.contains('textFieldObject')) game.submitPleyer('playerName');
   },
 
  
@@ -80,13 +80,13 @@ var game = {
         localStorage.setItem("players", JSON.stringify(players));
       }
       this.getid('submitPleyer').setAttribute('disabled','disabled');
-      this.getAll('.textInfo').forEach(el => el.classList.remove('hiddenObject'));
+      this.getAll('.textInfo').forEach(el => el.classList.remove('textFieldObject'));
       var self = this;
       setTimeout(function(){
           self.board.innerHTML = "";
           game.init();
-          self.getid("userLogin").classList.add("hiddenObject");
-          self.getid("mainWrapper").classList.remove("hiddenObject");
+          self.getid("userLogin").classList.add("textFieldObject");
+          self.getid("mainWrapper").classList.remove("textFieldObject");
           game.startGame();
       },1400);
   },
@@ -109,7 +109,7 @@ var game = {
   },
 
   init:function(){
-      this.getAll('.textInfo').forEach(el=>el.classList.add('hiddenObject'));
+      this.getAll('.textInfo').forEach(el=>el.classList.add('textFieldObject'));
       this.drawBoard();
       this.rows = this.getAll('.row');
       for(var i = 1;i<4;i++){

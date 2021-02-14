@@ -1,0 +1,22 @@
+{
+  "name": "game",
+  "version": "1.0.0",
+  "description": "This is a Snake2.0 Game\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RheaSudesh/Snake-Game-2.0.git"
+  },
+  "author": "Rhea Sudesh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RheaSudesh/Snake-Game-2.0/issues"
+  },
+  "homepage": "https://github.com/RheaSudesh/Snake-Game-2.0#readme",
+  "devDependencies": {
+    "jasmine": "^3.6.4"
+  }
+}
